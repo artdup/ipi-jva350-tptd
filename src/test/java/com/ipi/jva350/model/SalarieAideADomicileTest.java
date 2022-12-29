@@ -8,44 +8,61 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class SalarieAideADomicileTest {
 
     @Test
-    public void aLegalementDroitADesCongesPayesTest() {
-        //Given
-        SalarieAideADomicile aide = new SalarieAideADomicile();
+    void testALegalementDroitADesCongesPayesDefault() {
+        // Given
+        SalarieAideADomicile salarieAideADomicile = new SalarieAideADomicile();
         // When
-        boolean res = aide.aLegalementDroitADesCongesPayes();
+        boolean res = salarieAideADomicile.aLegalementDroitADesCongesPayes();
+        // Then
+        Assertions.assertFalse(res);
+    }
+
+    @Test
+    void testALegalementDroitADesCongesPayes9() {
+        // Given
+        SalarieAideADomicile salarieAideADomicile = new SalarieAideADomicile();
+        salarieAideADomicile.setJoursTravaillesAnneeNMoins1(9);
+        // When
+        boolean res = salarieAideADomicile.aLegalementDroitADesCongesPayes();
+        // Then
+        Assertions.assertFalse(res);
+    }
+
+    @Test
+    void testALegalementDroitADesCongesPayes10() {
+        // Given
+        SalarieAideADomicile salarieAideADomicile = new SalarieAideADomicile();
+        salarieAideADomicile.setJoursTravaillesAnneeNMoins1(10);
+        // When
+        boolean res = salarieAideADomicile.aLegalementDroitADesCongesPayes();
         // Then
         Assertions.assertTrue(res);
     }
 
     @Test
-    public void aLegalementDroitADesCongesPayesGreatNumber() {
-        //Given
-        SalarieAideADomicile aide = new SalarieAideADomicile();
-        aide.setJoursTravaillesAnneeNMoins1(100);
-        //When
-        boolean res = aide.aLegalementDroitADesCongesPayes();
-        //Then
+    void testALegalementDroitADesCongesPayesBigNumber() {
+        // Given
+        SalarieAideADomicile salarieAideADomicile = new SalarieAideADomicile();
+        salarieAideADomicile.setJoursTravaillesAnneeNMoins1(100);
+        // When
+        boolean res = salarieAideADomicile.aLegalementDroitADesCongesPayes();
+        // Then
         Assertions.assertTrue(res);
     }
-@ParameterizedTest
-@CsvSource({
-        "'',false",
-        "'',true",
-})
-    @Test
-    public void calculeJoursDeCongeDecomptesPourPlageTest() {
-        //Given
-        SalarieAideADomicile aide = new SalarieAideADomicile();
-        //When
-        LinkedHashSet<LocalDate> joursDeCongesDecomptes = aide.calculeJoursDeCongeDecomptesPourPlage((dateDebut, dateFin))
 
-        //Then
-        Assertions.assertEquals(joursDeCongesDecomptes.size(),expected);
-
+    @ParameterizedTest
+    @CsvSource({
+            "'2022-11-30', '2022-11-30', 1"
+    })
+    void testCalculeJoursDeCongeDecomptesPourPlage(String dateDebut, String dateFin, int tailleAttendue) {
+        // Given
+        SalarieAideADomicile salarieAideADomicile = new SalarieAideADomicile();
+        // When
+        LinkedHashSet<LocalDate> joursDeCongesDecomptes = salarieAideADomicile.calculeJoursDeCongeDecomptesPourPlage(LocalDate.parse(dateDebut), LocalDate.parse(dateFin));
+        // Then
+        Assertions.assertEquals(joursDeCongesDecomptes.size(), tailleAttendue);
     }
 }
