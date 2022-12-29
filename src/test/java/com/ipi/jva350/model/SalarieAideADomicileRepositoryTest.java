@@ -1,5 +1,6 @@
 package com.ipi.jva350.model;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,5 +12,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class SalarieAideADomicileRepositoryTest {
     @Autowired
     com.ipi.jva350.repository.SalarieAideADomicileRepository salarieRepository;
+
     @Test
-    public void testFindByNumeroSecu(){
+    public void testFindByNom() {
+        SalarieAideADomicile nom = new SalarieAideADomicile();
+        nom.getNom();
+        SalarieAideADomicile res = salarieRepository.findByNom("Dupont");
+    Assertions.assertEquals(res);
+    }
+}
